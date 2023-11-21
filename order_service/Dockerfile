@@ -6,4 +6,5 @@ RUN git clone -b poco-1.11.7-release https://github.com/pocoproject/poco.git && 
 RUN git clone -b labs/lab2 https://github.com/kopistas/ais-course
 RUN sudo ldconfig
 RUN cd ais-course && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "ais-course/build/hl_mai_lab_01" ]
+ENTRYPOINT [ "ais-course/build/platform_binary" ]
+CMD ["order"]

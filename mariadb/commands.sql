@@ -4,6 +4,7 @@ show tables;
 CREATE TABLE IF NOT EXISTS User (
   id INT AUTO_INCREMENT PRIMARY KEY,
   login VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
@@ -38,9 +39,9 @@ CREATE TABLE IF NOT EXISTS Order_Service (
 );
 
 -- Inserting data into User table
-INSERT INTO User (login, first_name, last_name, email, title, role) 
-VALUES ('jdoe', 'John', 'Doe', 'johndoe@example.com', 'Mr.', 'admin'), 
-       ('jsmith', 'Jane', 'Smith', 'janesmith@example.com', 'Ms.', 'user');
+INSERT INTO User (login, password, first_name, last_name, email, title, role) 
+VALUES ('jdoe', 'passowrd', 'John', 'Doe', 'johndoe@example.com', 'Mr.', 'implementer'), 
+       ('jsmith', 'passowrd', 'Jane', 'Smith', 'janesmith@example.com', 'Ms.', 'customer');
 
 -- Inserting data into Service table
 INSERT INTO Service (name, type, implementer_id, description, date) 

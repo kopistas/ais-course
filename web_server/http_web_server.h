@@ -37,20 +37,62 @@ using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
+#include "service_request_factory.h"
+#include "user_request_factory.h"
+#include "order_request_factory.h"
+
 #include "http_request_factory.h"
 #include "../database/user.h"
 
 class HTTPWebServer : public Poco::Util::ServerApplication
 {
-public:
-    int main([[maybe_unused]] const std::vector<std::string> &args)
+private:
+    std::unique_ptr<HTTPRequestHandlerFactory> createFactory(const std::string& type)
     {
+        std::string format = "SomeFormatString";
+
+        if (type == "service")
+        {
+            return std::make_unique<ServiceRequestFactory>(format);
+        }
+        else if (type == "user")
+        {
+            return std::make_unique<UserRequestFactory>(format);
+        }
+        else if (type == "order")
+        {
+            return std::make_unique<OrderRequestFactory>(format);
+        }
+        else
+        {
+            throw Poco::InvalidArgumentException("Invalid argument for request factory type");
+        }
+    }
+
+public:
+    int main(const std::vector<std::string> &args)
+    {
+        if (args.empty())
+        {
+            std::cout << "Usage: <program> [service|user|order]" << std::endl;
+            return Application::EXIT_USAGE;
+        }
+
+        try
+        {
             database::User::init();
+            std::unique_ptr<HTTPRequestHandlerFactory> requestFactory = createFactory(args[0]);
             ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8080));
-            HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
+            HTTPServer srv(requestFactory.release(), svs, new HTTPServerParams);
             srv.start();
             waitForTerminationRequest();
             srv.stop();
+        }
+        catch (const Poco::Exception& exc)
+        {
+            std::cerr << exc.displayText() << std::endl;
+            return Application::EXIT_SOFTWARE;
+        }
 
         return Application::EXIT_OK;
     }
