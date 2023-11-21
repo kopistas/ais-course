@@ -19,6 +19,8 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
+#include <iostream>
+
 using Poco::DateTimeFormat;
 using Poco::DateTimeFormatter;
 using Poco::ThreadPool;
