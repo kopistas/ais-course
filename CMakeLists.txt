@@ -26,7 +26,8 @@ add_executable(${PLATFORM_BINARY} main.cpp
                                  config/config.cpp 
                                  database/database.cpp
                                  database/service.cpp
-                                 database/user.cpp)
+                                 database/user.cpp
+                                 database/order.cpp)
 
 
 target_include_directories(${PLATFORM_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")

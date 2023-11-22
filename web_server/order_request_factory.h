@@ -22,7 +22,9 @@ public:
     {
         std::cout << "Order request: " << request.getURI() << std::endl;
         // You can add more URI checks here if needed
-        if (hasSubstr(request.getURI(), "/order"))
+        if (hasSubstr(request.getURI(), "/orders/create") || 
+            hasSubstr(request.getURI(),"/orders/add") || 
+            hasSubstr(request.getURI(),"/orders/search"))
             return new OrderHandler(_format);
         return nullptr;
     }
