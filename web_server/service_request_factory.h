@@ -21,7 +21,8 @@ public:
     {
         std::cout << "Service request: " << request.getURI() << std::endl;
         // You can add more URI checks here if needed
-        if (hasSubstr(request.getURI(), "/service"))
+        if (hasSubstr(request.getURI(), "/services/list") || 
+            hasSubstr(request.getURI(),"/services/make"))
             return new ServiceHandler(_format);
         return nullptr;
     }
