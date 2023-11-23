@@ -100,8 +100,7 @@ public:
                 Poco::JSON::Stringifier::stringify(root, ostr);
                 return;
 
-
-             } else if (hasSubstr(request.getURI(), "/services/list")) {
+             } else if (hasSubstr(request.getURI(), "/orders/add")) {
                 std::vector<database::Service> servicesList = database::Service::read_all();
                 Poco::JSON::Array jsonServices;
                 for (const auto& service : servicesList) {
@@ -113,7 +112,9 @@ public:
                 std::ostream& ostr = response.send();
                 Poco::JSON::Stringifier::stringify(jsonServices, ostr);
                 return;
-             } 
+             } else if (hasSubstr(request.getURI(), "/orders/search")) {
+
+             }
         }
         catch (...)
         {
