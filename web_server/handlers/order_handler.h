@@ -62,23 +62,8 @@ public:
         {
              if (hasSubstr(request.getURI(), "/orders/create") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
 
-                database::Order newOrder;
                 long consumer_id = std::stol(form.get("consumer_id", "0"));
-                newOrder.consumer_id() = consumer_id;
-                std::vector<long> service_ids;
-
-                newOrder.list_of_services_ids() = service_ids;
-                long creation_timestamp = std::stol(form.get("date_of_creation", "0"));
-                Poco::Timestamp creation_ts(creation_timestamp * Poco::Timestamp::resolution());
-                Poco::DateTime creation_date(creation_ts);
-                newOrder.date_of_creation() = creation_date;
-
-                long deadline_timestamp = std::stol(form.get("deadline_date", "0"));
-                Poco::Timestamp deadline_ts(deadline_timestamp * Poco::Timestamp::resolution());
-                Poco::DateTime deadline_date(deadline_ts);
-                newOrder.deadline_date() = deadline_date;
-
-                newOrder.save_to_mysql();
+                database::Order newOrder = database::Order::create(consumer_id);
 
                 response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
                 response.setContentType("application/json");

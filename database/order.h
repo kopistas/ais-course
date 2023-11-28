@@ -44,7 +44,6 @@ namespace database {
 
         void populate_services();
         // Database Interaction
-        void save_to_mysql(); // Method to save the order to MySQL database
         static std::optional<Order> read_by_id(long id); // Read an order by its ID from the database
         static std::vector<Order> read_all(); // Read all orders from the database
     };
