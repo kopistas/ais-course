@@ -60,60 +60,84 @@ public:
         HTMLForm form(request, request.stream());
         try
         {
-             if (hasSubstr(request.getURI(), "/orders/make") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
+             if (hasSubstr(request.getURI(), "/orders/create") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
 
-                database::Service newService;
-                newService.name() = form.get("name", "");
-                newService.type() = form.get("type", "");
-                newService.description() = form.get("description", "");
+                database::Order newOrder;
+                long consumer_id = std::stol(form.get("consumer_id", "0"));
+                newOrder.consumer_id() = consumer_id;
+                std::vector<long> service_ids;
 
-                std::string implementer_id_str = form.get("implementer_id", "");
+                newOrder.list_of_services_ids() = service_ids;
+                long creation_timestamp = std::stol(form.get("date_of_creation", "0"));
+                Poco::Timestamp creation_ts(creation_timestamp * Poco::Timestamp::resolution());
+                Poco::DateTime creation_date(creation_ts);
+                newOrder.date_of_creation() = creation_date;
 
-                // Convert the string to a long                
-                if (!implementer_id_str.empty()) {
-                    newService.implementer_id() = std::stol(implementer_id_str);
-                }
+                long deadline_timestamp = std::stol(form.get("deadline_date", "0"));
+                Poco::Timestamp deadline_ts(deadline_timestamp * Poco::Timestamp::resolution());
+                Poco::DateTime deadline_date(deadline_ts);
+                newOrder.deadline_date() = deadline_date;
 
-                std::string timestamp_str = form.get("date", "");
-                if (!timestamp_str.empty()) {
-                    
-                        // Convert string to long to get the timestamp
-                    long timestamp = std::stol(timestamp_str);
-
-                        // Convert Unix timestamp to Poco::Timestamp
-                    Poco::Timestamp pocoTimestamp;
-                    pocoTimestamp = timestamp * Poco::Timestamp::resolution(); // Convert seconds to microseconds
-                        
-                        // Create a DateTime from the Timestamp
-                    Poco::DateTime date(pocoTimestamp);
-                        
-                        // Set the service date
-                    newService.date() = date;
-                }
-
-                // ... Populate other service fields and save to database
+                newOrder.save_to_mysql();
 
                 response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
                 response.setContentType("application/json");
                 std::ostream& ostr = response.send();
-                Poco::JSON::Object::Ptr root = newService.toJSON();
+                Poco::JSON::Object::Ptr root = newOrder.toJSON();
                 Poco::JSON::Stringifier::stringify(root, ostr);
                 return;
 
-             } else if (hasSubstr(request.getURI(), "/orders/add")) {
-                std::vector<database::Service> servicesList = database::Service::read_all();
-                Poco::JSON::Array jsonServices;
-                for (const auto& service : servicesList) {
-                    jsonServices.add(service.toJSON());
+             } else if (hasSubstr(request.getURI(), "/orders/add") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
+                
+                long order_id = std::stol(form.get("order_id", "0"));
+                long service_id = std::stol(form.get("service_id", "0"));
+
+                std::optional<database::Order> order = database::Order::read_by_id(order_id);
+                
+                if (order.has_value()) {
+                    auto orderValue = order.value();
+
+                    orderValue.add_service(service_id, order_id);
+
+                    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
+                    response.setContentType("application/json");
+                    std::ostream& ostr = response.send();
+                    Poco::JSON::Object::Ptr root = orderValue.toJSON();
+                    Poco::JSON::Stringifier::stringify(root, ostr);
+                    return;
+                } else {
+                    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
+                    response.setContentType("application/json");
+                    std::ostream& ostr = response.send();
+                    Poco::JSON::Object errorObj;
+                    errorObj.set("error", "Order not found with the provided ID.");
+                    Poco::JSON::Stringifier::stringify(errorObj, ostr);
+                    return;
                 }
 
-                response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
-                response.setContentType("application/json");
-                std::ostream& ostr = response.send();
-                Poco::JSON::Stringifier::stringify(jsonServices, ostr);
-                return;
-             } else if (hasSubstr(request.getURI(), "/orders/search")) {
+             } else if (hasSubstr(request.getURI(), "/orders/search") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)) {
+                
+                long order_id = std::stol(form.get("order_id", "0"));
 
+                std::optional<database::Order> order = database::Order::read_by_id(order_id);
+                
+                if (order.has_value()) {
+                    auto orderValue = order.value();
+                    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
+                    response.setContentType("application/json");
+                    std::ostream& ostr = response.send();
+                    Poco::JSON::Object::Ptr root = orderValue.toJSON();
+                    Poco::JSON::Stringifier::stringify(root, ostr);
+                    return;
+                } else {
+                    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
+                    response.setContentType("application/json");
+                    std::ostream& ostr = response.send();
+                    Poco::JSON::Object errorObj;
+                    errorObj.set("error", "Order not found with the provided ID.");
+                    Poco::JSON::Stringifier::stringify(errorObj, ostr);
+                    return;
+                }
              }
         }
         catch (...)

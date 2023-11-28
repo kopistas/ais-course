@@ -102,7 +102,7 @@ public:
                 return;
 
 
-             } else if (hasSubstr(request.getURI(), "/services/list")) {
+             } else if (hasSubstr(request.getURI(), "/services/list") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)) {
                 std::vector<database::Service> servicesList = database::Service::read_all();
                 Poco::JSON::Array jsonServices;
                 for (const auto& service : servicesList) {

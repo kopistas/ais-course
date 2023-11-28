@@ -21,7 +21,6 @@ public:
     HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request) override
     {
         std::cout << "Order request: " << request.getURI() << std::endl;
-        // You can add more URI checks here if needed
         if (hasSubstr(request.getURI(), "/orders/create") || 
             hasSubstr(request.getURI(),"/orders/add") || 
             hasSubstr(request.getURI(),"/orders/search"))

@@ -20,7 +20,6 @@ public:
     HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request) override
     {
         std::cout << "Service request: " << request.getURI() << std::endl;
-        // You can add more URI checks here if needed
         if (hasSubstr(request.getURI(), "/services/list") || 
             hasSubstr(request.getURI(),"/services/make"))
             return new ServiceHandler(_format);
