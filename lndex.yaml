@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: AIS-Services
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:2082
+  - url: http://127.0.0.1:2083
+  - url: http://127.0.0.1:2081
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+paths:
+  /users/search:
+    get:
+      tags:
+        - default
+      summary: Search for user
+      parameters:
+        - name: first_name
+          in: query
+          schema:
+            type: string
+          example: Emma
+        - name: last_name
+          in: query
+          schema:
+            type: string
+          example: Watson
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/add:
+    post:
+      tags:
+        - default
+      summary: Add User
+      requestBody:
+        content: {}
+      parameters:
+        - name: first_name
+          in: query
+          schema:
+            type: string
+          example: Emma
+        - name: last_name
+          in: query
+          schema:
+            type: string
+          example: Watson
+        - name: email
+          in: query
+          schema:
+            type: string
+          example: emma.watson@gmail.com
+        - name: title
+          in: query
+          schema:
+            type: string
+          example: MRs
+        - name: login
+          in: query
+          schema:
+            type: string
+          example: emmaW
+        - name: password
+          in: query
+          schema:
+            type: string
+          example: Qwerty123
+        - name: role
+          in: query
+          schema:
+            type: string
+          example: customer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth:
+    get:
+      tags:
+        - default
+      summary: Authorize User
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/list:
+    get:
+      tags:
+        - default
+      summary: Get List Of Services
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services/make:
+    post:
+      tags:
+        - default
+      summary: Create a new service
+      requestBody:
+        content: {}
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+          example: Car Repair
+        - name: type
+          in: query
+          schema:
+            type: string
+          example: Misc
+        - name: description
+          in: query
+          schema:
+            type: string
+          example: Car full repair and maintenance
+        - name: implementer_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: date
+          in: query
+          schema:
+            type: integer
+          example: '1701544232'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/search:
+    get:
+      tags:
+        - default
+      summary: Search for Order
+      parameters:
+        - name: order_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/create:
+    post:
+      tags:
+        - default
+      summary: Create Order
+      requestBody:
+        content: {}
+      parameters:
+        - name: consumer_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /orders/add:
+    post:
+      tags:
+        - default
+      summary: Add Service To Order
+      requestBody:
+        content: {}
+      parameters:
+        - name: order_id
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: service_id
+          in: query
+          schema:
+            type: integer
+          example: '2'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
