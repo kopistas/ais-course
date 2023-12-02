@@ -134,8 +134,16 @@ namespace database
 
     Service Service::fromJSON(const std::string &str)
     {
-        printf("%s", str.c_str());
         Service service;
+        Poco::JSON::Parser parser;
+        Poco::Dynamic::Var result = parser.parse(str);
+        Poco::JSON::Object::Ptr object = result.extract<Poco::JSON::Object::Ptr>();
+
+        service.id() = object->getValue<long>("id");
+        service.name() = object->getValue<std::string>("name");
+        service.description() = object->getValue<std::string>("description");
+        service.type() = object->getValue<std::string>("type");
+
         return service;
     }
 

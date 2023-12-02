@@ -92,7 +92,7 @@ public:
                     newService.date() = date;
                 }
 
-                // ... Populate other service fields and save to database
+                newService.save_to_mysql();
 
                 response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
                 response.setContentType("application/json");
@@ -127,7 +127,7 @@ public:
         root->set("type", "/errors/not_found");
         root->set("title", "Internal exception");
         root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
-        root->set("detail", "request ot found");
+        root->set("detail", "request not found");
         root->set("instance", "/user");
         std::ostream &ostr = response.send();
         Poco::JSON::Stringifier::stringify(root, ostr);
