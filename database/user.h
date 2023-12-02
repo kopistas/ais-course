@@ -17,6 +17,7 @@ namespace database
             std::string _title;
             std::string _login;
             std::string _password;
+            std::string _role;
 
         public:
 
@@ -29,6 +30,7 @@ namespace database
             const std::string &get_title() const;
             const std::string &get_login() const;
             const std::string &get_password() const;
+            const std::string &get_role() const;
 
             long&        id();
             std::string &first_name();
@@ -37,7 +39,8 @@ namespace database
             std::string &title();
             std::string &login();
             std::string &password();
-
+            std::string &role();
+            
             static void init();
             static std::optional<User> read_by_id(long id);
             static std::optional<long> auth(std::string &login, std::string &password);

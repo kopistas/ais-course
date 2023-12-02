@@ -196,7 +196,7 @@ public:
 
                 return;
             }
-            else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)
+            else if (hasSubstr(request.getURI(), "users/add") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST))
             {
                 if (form.has("first_name") && form.has("last_name") && form.has("email") && form.has("title") && form.has("login") && form.has("password"))
                 {
@@ -207,6 +207,7 @@ public:
                     user.title() = form.get("title");
                     user.login() = form.get("login");
                     user.password() = form.get("password");
+                    user.role() = form.get("role");
 
                     bool check_result = true;
                     std::string message;

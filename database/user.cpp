@@ -61,6 +61,7 @@ namespace database
         root->set("title", _title);
         root->set("login", _login);
         root->set("password", _password);
+        root->set("role", _role);
 
         return root;
     }
@@ -79,6 +80,7 @@ namespace database
         user.title() = object->getValue<std::string>("title");
         user.login() = object->getValue<std::string>("login");
         user.password() = object->getValue<std::string>("password");
+        user.role() = object->getValue<std::string>("role");
 
         return user;
     }
@@ -119,7 +121,7 @@ namespace database
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement select(session);
             User a;
-            select << "SELECT id, first_name, last_name, email, title,login,password FROM User where id=?",
+            select << "SELECT id, first_name, last_name, email, title,login,password,role FROM User where id=?",
                 into(a._id),
                 into(a._first_name),
                 into(a._last_name),
@@ -127,6 +129,7 @@ namespace database
                 into(a._title),
                 into(a._login),
                 into(a._password),
+                into(a._role),
                 use(id),
                 range(0, 1); //  iterate over result set one row at a time
 
@@ -156,7 +159,7 @@ namespace database
             Statement select(session);
             std::vector<User> result;
             User a;
-            select << "SELECT id, first_name, last_name, email, title, login, password FROM User",
+            select << "SELECT id, first_name, last_name, email, title, login, password, role FROM User",
                 into(a._id),
                 into(a._first_name),
                 into(a._last_name),
@@ -164,6 +167,7 @@ namespace database
                 into(a._title),
                 into(a._login),
                 into(a._password),
+                into(a._role),
                 range(0, 1); //  iterate over result set one row at a time
 
             while (!select.done())
@@ -197,7 +201,7 @@ namespace database
             User a;
             first_name += "%";
             last_name += "%";
-            select << "SELECT id, first_name, last_name, email, title, login, password FROM User where first_name LIKE ? and last_name LIKE ?",
+            select << "SELECT id, first_name, last_name, email, title, login, password, role FROM User where first_name LIKE ? and last_name LIKE ?",
                 into(a._id),
                 into(a._first_name),
                 into(a._last_name),
@@ -205,6 +209,7 @@ namespace database
                 into(a._title),
                 into(a._login),
                 into(a._password),
+                into(a._role),
                 use(first_name),
                 use(last_name),
                 range(0, 1); //  iterate over result set one row at a time
@@ -238,13 +243,14 @@ namespace database
             Poco::Data::Session session = database::Database::get().create_session();
             Poco::Data::Statement insert(session);
 
-            insert << "INSERT INTO User (first_name,last_name,email,title,login,password) VALUES(?, ?, ?, ?, ?, ?)",
+            insert << "INSERT INTO User (first_name,last_name,email,title,login,password,role) VALUES(?, ?, ?, ?, ?, ?, ?)",
                 use(_first_name),
                 use(_last_name),
                 use(_email),
                 use(_title),
                 use(_login),
-                use(_password);
+                use(_password),
+                use(_role);
 
             insert.execute();
 
@@ -317,6 +323,11 @@ namespace database
         return _title;
     }
 
+    const std::string &User::get_role() const
+    {
+        return _role;
+    }
+
     long &User::id()
     {
         return _id;
@@ -340,5 +351,10 @@ namespace database
     std::string &User::title()
     {
         return _title;
+    }
+
+    std::string &User::role()
+    {
+        return _role;
     }
 }
