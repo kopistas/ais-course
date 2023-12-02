@@ -62,6 +62,8 @@ public:
         {
              if (hasSubstr(request.getURI(), "/orders/create") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
 
+                verifyExists(form, "consumer_id");
+                
                 long consumer_id = std::stol(form.get("consumer_id", "0"));
                 database::Order newOrder = database::Order::create(consumer_id);
 
@@ -74,6 +76,9 @@ public:
 
              } else if (hasSubstr(request.getURI(), "/orders/add") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST)) {
                 
+                verifyExists(form, "order_id");
+                verifyExists(form, "service_id");
+
                 long order_id = std::stol(form.get("order_id", "0"));
                 long service_id = std::stol(form.get("service_id", "0"));
 
@@ -102,7 +107,8 @@ public:
 
              } else if (hasSubstr(request.getURI(), "/orders/search") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET)) {
                 
-                long order_id = std::stol(form.get("order_id", "0"));
+                verifyExists(form, "order_id");
+                long order_id = std::stol(form.get("order_id", ""));
 
                 std::optional<database::Order> order = database::Order::read_by_id(order_id);
                 
@@ -125,6 +131,19 @@ public:
                 }
              }
         }
+        catch (const std::invalid_argument &e) {
+            response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
+            response.setChunkedTransferEncoding(true);
+            response.setContentType("application/json");
+            Poco::JSON::Object::Ptr root = new Poco::JSON::Object();
+            root->set("type", "/errors/not_found");
+            root->set("title", "Internal exception");
+            root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
+            root->set("detail", e.what()); 
+            root->set("instance", "/service");
+            std::ostream &ostr = response.send();
+            Poco::JSON::Stringifier::stringify(root, ostr);
+        }
         catch (...)
         {
         }
@@ -137,7 +156,7 @@ public:
         root->set("title", "Internal exception");
         root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
         root->set("detail", "request not found");
-        root->set("instance", "/user");
+        root->set("instance", "/order");
         std::ostream &ostr = response.send();
         Poco::JSON::Stringifier::stringify(root, ostr);
     }

@@ -100,7 +100,7 @@ namespace database
             Statement select(session);
 
             Order order;
-            select << "SELECT id, consumer_id, date_of_creation, deadline_date FROM Orders WHERE consumer_id=?",
+            select << "SELECT id, consumer_id, date_of_creation, deadline_date FROM `Order` WHERE consumer_id=?",
                 into(order._id),
                 into(order._consumer_id),
                 into(order._date_of_creation),
@@ -127,7 +127,7 @@ namespace database
             Statement select(session);
             Order order;
 
-            select << "SELECT id, consumer_id, date_of_creation, deadline_date FROM Orders WHERE id=?",
+            select << "SELECT id, consumer_id, date_of_creation, deadline_date FROM `Order` WHERE id=?",
                 into(order._id),
                 into(order._consumer_id),
                 into(order._date_of_creation),

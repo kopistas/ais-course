@@ -35,3 +35,9 @@ static bool hasSubstr(const std::string &str, const std::string &substr)
     }
     return false;
 }
+
+void verifyExists(const Poco::Net::HTMLForm &form, const std::string &key) {
+    if (!form.has(key)) {
+        throw std::invalid_argument("The key " + key + " does not exist.");
+    }
+}
