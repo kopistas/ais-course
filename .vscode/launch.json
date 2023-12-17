@@ -1,0 +1,64 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+
+        {
+            "name": "(gdb) Launch User's service",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/platform_binary",
+            "args": ["user"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {"name": "DB_HOST", "value": "127.0.0.1"},
+                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_LOGIN", "value": "stud"},
+                {"name": "DB_PASSWORD", "value": "stud"},
+                {"name": "DB_DATABASE", "value": "archdb"}
+            ],
+            "externalConsole": false
+        },
+
+        {
+            "name": "(gdb) Launch Services' service",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/platform_binary",
+            "args": ["service"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {"name": "DB_HOST", "value": "127.0.0.1"},
+                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_LOGIN", "value": "stud"},
+                {"name": "DB_PASSWORD", "value": "stud"},
+                {"name": "DB_DATABASE", "value": "archdb"}
+            ],
+            "externalConsole": false
+        },
+
+        {
+            "name": "(gdb) Launch Orders' service",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/platform_binary",
+            "args": ["order"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {"name": "DB_HOST", "value": "127.0.0.1"},
+                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_LOGIN", "value": "stud"},
+                {"name": "DB_PASSWORD", "value": "stud"},
+                {"name": "DB_DATABASE", "value": "archdb"}
+            ],
+            "externalConsole": false
+        }
+
+    ]
+}
