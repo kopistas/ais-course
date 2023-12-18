@@ -35,6 +35,7 @@ add_executable(${PLATFORM_BINARY} main.cpp
                                  database/user.cpp
                                  database/order.cpp)
 
+add_executable(load_data load_data.cpp)
 
 target_include_directories(${PLATFORM_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
 target_compile_options(${PLATFORM_BINARY} PRIVATE -Wall -Wextra -pedantic -Werror )
@@ -47,4 +48,11 @@ target_link_libraries(${PLATFORM_BINARY} PRIVATE
                              "PocoData"
                              "PocoDataMySQL"
                              "mysqlclient"
+                             ZLIB::ZLIB)
+
+target_link_libraries(load_data PRIVATE 
+                             ${CMAKE_THREAD_LIBS_INIT} 
+                             ${Poco_LIBRARIES}
+                             "PocoData"
+                             "PocoDataMySQL"                      
                              ZLIB::ZLIB)
