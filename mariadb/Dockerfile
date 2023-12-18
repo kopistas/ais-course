@@ -1,4 +1,4 @@
-FROM mariadb
+FROM mariadb:10.10.4
 
 # Update and clean apt cache
 RUN apt-get clean && apt-get update --fix-missing && \
