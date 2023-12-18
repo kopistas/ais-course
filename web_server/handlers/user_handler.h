@@ -260,7 +260,7 @@ public:
 
                     if (check_result)
                     {
-                        user.save_to_mysql();
+                        user.send_to_queue();
                         user.save_to_cache();
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
