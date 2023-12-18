@@ -1,1 +1,1 @@
-wrk -d 10 -t 500 -c 200 --latency -s ./get_no_cache.lua http://localhost:8082/
+wrk -d 10 -t 50 -c 200 --latency -s ./get_no_cache.lua http://localhost:8082/
