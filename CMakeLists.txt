@@ -46,6 +46,7 @@ add_executable(${WRITER_BINARY} writer_main.cpp
 add_executable(load_data load_data.cpp)
 
 target_include_directories(${PLATFORM_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
+target_include_directories(${WRITER_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
 target_compile_options(${PLATFORM_BINARY} PRIVATE -Wall -Wextra -pedantic -Werror )
 set_target_properties(${PLATFORM_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(${PLATFORM_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
