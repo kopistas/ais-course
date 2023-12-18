@@ -72,6 +72,7 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
+      - CACHE=null # Dummy string, otherwise the service wants the value in config
     ports:
       - 8081:8080
     networks:
@@ -110,6 +111,7 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
+      - CACHE=null # Dummy string, otherwise the service wants the value in config
     ports:
       - 8083:8080
     networks:
