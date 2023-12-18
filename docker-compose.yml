@@ -12,10 +12,6 @@ services:
       MYSQL_USER: stud
       MYSQL_PASSWORD: stud
       MYSQL_ROOT_PASSWORD: '1'
-    # command: >
-    #   --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-    #   --general-log=ON
-    #   --log-queries-not-using-indexes=ON
     networks:
       - arch-network
     ports:
@@ -65,61 +61,59 @@ services:
       - db-node-1
       - db-node-2
 
-  # order_service:
-  #   build:
-  #     context: order_service
-  #     dockerfile: Dockerfile
-  #   container_name: order_service
-  #   environment:
-  #     - DB_HOST=mai-db-node-ex01
-  #     - DB_PORT=3306
-  #     - DB_LOGIN=stud
-  #     - DB_PASSWORD=stud
-  #     - DB_DATABASE=archdb
-  #   ports:
-  #     - 8081:8080
-  #   networks:
-  #     - arch-network
-  #   depends_on:
-  #     mai-db-node-ex01:
-  #       condition: service_healthy
+  order_service:
+    build:
+      context: order_service
+      dockerfile: Dockerfile
+    container_name: order_service
+    environment:
+      - DB_HOST=db-node-1
+      - DB_PORT=3306
+      - DB_LOGIN=stud
+      - DB_PASSWORD=stud
+      - DB_DATABASE=archdb
+    ports:
+      - 8081:8080
+    networks:
+      - arch-network
+    depends_on:
+      - db-node-1
   
-  # user_service:
-  #   build:
-  #     context: user_service
-  #     dockerfile: Dockerfile
-  #   container_name: user_service
-  #   environment:
-  #     - DB_HOST=proxysql
-  #     - DB_PORT=3306
-  #     - DB_LOGIN=stud
-  #     - DB_PASSWORD=stud
-  #     - DB_DATABASE=archdb
-  #   ports:
-  #     - 8082:8080
-  #   networks:
-  #     - arch-network
-  #   depends_on:
-  #     - proxysql
+  user_service:
+    build:
+      context: user_service
+      dockerfile: Dockerfile
+    container_name: user_service
+    environment:
+      - DB_HOST=proxysql
+      - DB_PORT=6033
+      - DB_LOGIN=stud
+      - DB_PASSWORD=stud
+      - DB_DATABASE=archdb
+    ports:
+      - 8082:8080
+    networks:
+      - arch-network
+    depends_on:
+      - proxysql
 
-  # service_service:
-  #   build:
-  #     context: service_service
-  #     dockerfile: Dockerfile
-  #   container_name: service_service
-  #   environment:
-  #     - DB_HOST=mai-db-node-ex01
-  #     - DB_PORT=3306
-  #     - DB_LOGIN=stud
-  #     - DB_PASSWORD=stud
-  #     - DB_DATABASE=archdb
-  #   ports:
-  #     - 8083:8080
-  #   networks:
-  #     - arch-network
-  #   depends_on:
-  #     mai-db-node-ex01:
-  #       condition: service_healthy
+  service_service:
+    build:
+      context: service_service
+      dockerfile: Dockerfile
+    container_name: service_service
+    environment:
+      - DB_HOST=db-node-1
+      - DB_PORT=3306
+      - DB_LOGIN=stud
+      - DB_PASSWORD=stud
+      - DB_DATABASE=archdb
+    ports:
+      - 8083:8080
+    networks:
+      - arch-network
+    depends_on:
+      - db-node-1
 
 volumes:
   db-node-1-data:
