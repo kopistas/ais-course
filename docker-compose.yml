@@ -1,33 +1,6 @@
 version: '2.1'
 
 services:
-  # mai-db-node-ex01:
-  #   build:
-  #     context: mariadb
-  #     dockerfile: Dockerfile
-  #   container_name: mai-db-node-ex01
-  #   restart: unless-stopped
-  #   environment:
-  #     MYSQL_DATABASE: archdb
-  #     MYSQL_USER: stud
-  #     MYSQL_PASSWORD: stud
-  #     MYSQL_ROOT_PASSWORD: '1'
-  #   command: >
-  #     --sql-mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
-  #     --general-log=ON
-  #     --log-queries-not-using-indexes=ON
-  #   networks:
-  #     - arch-network
-  #   ports:
-  #     - 3360:3306
-  #   healthcheck:
-  #     test: "/usr/bin/mariadb --user=stud --password=stud --execute \"SHOW DATABASES;\""
-  #     interval: 15s
-  #     timeout: 1s
-  #     retries: 5
-  #   volumes:
-  #     - db-node-ex01-data:/var/lib/mysql
-
   db-node-1:
     build:
       context: mariadb
@@ -68,24 +41,6 @@ services:
     volumes:
       - db-node-2-data:/var/lib/mysql
 
-  db-node-3:
-    build:
-      context: mariadb
-      dockerfile: Dockerfile
-    container_name: db-node-3
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: archdb
-      MYSQL_USER: stud
-      MYSQL_PASSWORD: stud
-      MYSQL_ROOT_PASSWORD: '1'
-    networks:
-      - arch-network
-    ports:
-      - 3362:3306
-    volumes:
-      - db-node-3-data:/var/lib/mysql
-
   proxysql:
     build:
       context: proxysql
@@ -109,7 +64,6 @@ services:
     depends_on:
       - db-node-1
       - db-node-2
-      - db-node-3
 
   # order_service:
   #   build:
@@ -130,23 +84,23 @@ services:
   #     mai-db-node-ex01:
   #       condition: service_healthy
   
-  user_service:
-    build:
-      context: user_service
-      dockerfile: Dockerfile
-    container_name: user_service
-    environment:
-      - DB_HOST=proxysql
-      - DB_PORT=3306
-      - DB_LOGIN=stud
-      - DB_PASSWORD=stud
-      - DB_DATABASE=archdb
-    ports:
-      - 8082:8080
-    networks:
-      - arch-network
-    depends_on:
-      - proxysql
+  # user_service:
+  #   build:
+  #     context: user_service
+  #     dockerfile: Dockerfile
+  #   container_name: user_service
+  #   environment:
+  #     - DB_HOST=proxysql
+  #     - DB_PORT=3306
+  #     - DB_LOGIN=stud
+  #     - DB_PASSWORD=stud
+  #     - DB_DATABASE=archdb
+  #   ports:
+  #     - 8082:8080
+  #   networks:
+  #     - arch-network
+  #   depends_on:
+  #     - proxysql
 
   # service_service:
   #   build:
@@ -170,7 +124,6 @@ services:
 volumes:
   db-node-1-data:
   db-node-2-data:
-  db-node-3-data:
   proxysql-data:
 
 networks:

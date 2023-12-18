@@ -16,7 +16,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "DB_HOST", "value": "127.0.0.1"},
-                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_PORT", "value": "6033"},
                 {"name": "DB_LOGIN", "value": "stud"},
                 {"name": "DB_PASSWORD", "value": "stud"},
                 {"name": "DB_DATABASE", "value": "archdb"}
@@ -34,7 +34,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "DB_HOST", "value": "127.0.0.1"},
-                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_PORT", "value": "6033"},
                 {"name": "DB_LOGIN", "value": "stud"},
                 {"name": "DB_PASSWORD", "value": "stud"},
                 {"name": "DB_DATABASE", "value": "archdb"}
@@ -52,7 +52,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "DB_HOST", "value": "127.0.0.1"},
-                {"name": "DB_PORT", "value": "3360"},
+                {"name": "DB_PORT", "value": "6033"},
                 {"name": "DB_LOGIN", "value": "stud"},
                 {"name": "DB_PASSWORD", "value": "stud"},
                 {"name": "DB_DATABASE", "value": "archdb"}

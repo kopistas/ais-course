@@ -4,6 +4,7 @@
 # Data & Logs Settings
 datadir="/var/lib/proxysql"
 errorlog="/var/lib/proxysql/proxysql.log"
+mysql-eventslog_filename="/var/log/proxysql/queries.log"
 
 # Contains global variables that control the functionality of the admin interface.
 # @see https://proxysql.com/documentation/global-variables/
@@ -44,12 +45,6 @@ mysql_servers =
         port=3306
         hostgroup=1
         max_connections=200
-    },
-    {
-        address="db-node-3"
-        port=3306
-        hostgroup=2
-        max_connections=200
     }
 )
 
@@ -87,13 +82,6 @@ mysql_query_rules:
         active=1
         match_pattern="-- sharding:1"
         destination_hostgroup=1
-        apply=1
-    },
-    {
-        rule_id=3
-        active=1
-        match_pattern="-- sharding:2"
-        destination_hostgroup=2
         apply=1
     },
 )
