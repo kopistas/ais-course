@@ -221,6 +221,7 @@ services:
       - proxysql
       - cache
       - kafka1
+      - user_service
       - db-node-1
       - db-node-2
   

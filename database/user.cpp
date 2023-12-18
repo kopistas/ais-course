@@ -334,7 +334,7 @@ namespace database
         cppkafka::MessageBuilder builder(Config::get().get_queue_topic());
         std::string mk = std::to_string(++message_key);
         builder.key(mk);                                       // set some key
-        builder.header(Hdr{"producer_type", "author writer"}); // set some custom header
+        builder.header(Hdr{"producer_type", "user writer"}); // set some custom header
         builder.payload(message);                              // set message
 
         while (not_sent)
