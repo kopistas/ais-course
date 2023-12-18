@@ -132,6 +132,7 @@ volumes:
   db-node-1-data:
   db-node-2-data:
   proxysql-data:
+  cache:
 
 networks:
   arch-network:
