@@ -72,6 +72,7 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
+      - CACHE=null # Dummy string, otherwise the service wants the value in config
     ports:
       - 8081:8080
     networks:
@@ -90,12 +91,14 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
+      - CACHE=cache:6379
     ports:
       - 8082:8080
     networks:
       - arch-network
     depends_on:
       - proxysql
+      - cache
 
   service_service:
     build:
@@ -108,6 +111,7 @@ services:
       - DB_LOGIN=stud
       - DB_PASSWORD=stud
       - DB_DATABASE=archdb
+      - CACHE=null # Dummy string, otherwise the service wants the value in config
     ports:
       - 8083:8080
     networks:
@@ -115,10 +119,22 @@ services:
     depends_on:
       - db-node-1
 
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    networks:
+      - arch-network
+    volumes: 
+      - cache:/data
+
 volumes:
   db-node-1-data:
   db-node-2-data:
   proxysql-data:
+  cache:
 
 networks:
   arch-network:
