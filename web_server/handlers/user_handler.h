@@ -126,7 +126,7 @@ public:
                     std::optional<database::User> result = database::User::read_from_cache_by_id(id);
                     if (result)
                     {
-                        std::cout << "from cache" << std::endl;
+                        // std::cout << "from cache" << std::endl;
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
                         response.setContentType("application/json");
@@ -139,10 +139,10 @@ public:
                 std::optional<database::User> result = database::User::read_by_id(id);
                 if (result)
                 {
-                    std::cout << "found in base" << id << std::endl;
+                    // std::cout << "found in base" << id << std::endl;
                     if(!no_cache) {
                         result->save_to_cache();
-                        std::cout << "saved to cache" << id << std::endl;
+                        // std::cout << "saved to cache" << id << std::endl;
                     }
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
